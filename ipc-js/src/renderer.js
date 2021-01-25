@@ -18,3 +18,8 @@ window.myAPI.pong((msg)=>{
   const divPong = document.getElementById('pong');
   divPong.innerText = msg;
 })
+
+window.myAPI.broadcast((msg)=>{
+  const divBroadcast = document.getElementById("broadcast");
+  divBroadcast.innerText = msg;
+})

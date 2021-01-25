@@ -10,6 +10,11 @@ contextBridge.exposeInMainWorld('myAPI', {
   pong:(func) => { // メインプロセスからの受信用
     console.log("receive pong");
     ipcRenderer.on('asynchronous-reply', (event, ...args) => func(...args));
+  },
+  // ブロードキャストを受け取る
+  broadcast:(func) => {
+    console.log("receive broadcast");
+    ipcRenderer.on('broadcast', (event, ...args) => func(...args));
   }
 });
 

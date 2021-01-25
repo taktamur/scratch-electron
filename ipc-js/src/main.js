@@ -2,6 +2,7 @@
 const {app, BrowserWindow, ipcRenderer} = require('electron')
 const path = require('path')
 
+let windows ;
 function createWindow () {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -21,14 +22,18 @@ function createWindow () {
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
+
+  return mainWindow;
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
-  createWindow()
-  createWindow()
+  windows = [
+    createWindow(),
+    createWindow(),
+  ];
 
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
@@ -50,8 +55,14 @@ const {ipcMain} = require('electron')
 
 ipcMain.on('asynchronous-message', (event, arg) => {
   console.log("accept ping");
-  const msg = 'pong '+new Date().getTime();
+  const timestamp = new Date().getTime();
+  const msg = 'pong ' + timestamp
   console.log("response="+msg)
   // イベント送信者に返事
   event.sender.send('asynchronous-reply',msg );
+  // ブロードキャスト
+  const msg2 = "broadcast " + timestamp;
+  windows.forEach((w)=>{
+    w.webContents.send('broadcast', msg2);
+  })
 })
