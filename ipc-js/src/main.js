@@ -1,11 +1,11 @@
 // Modules to control application life and create native browser window
-const {app, BrowserWindow} = require('electron')
+const {app, BrowserWindow, ipcRenderer} = require('electron')
 const path = require('path')
 
 function createWindow () {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 800,
+    width: 300,
     height: 300,
     webPreferences: {
       // このへんの説明 https://akabeko.me/blog/2020/12/electron-12/
@@ -20,7 +20,7 @@ function createWindow () {
   mainWindow.loadFile('src/index.html')
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 }
 
 // This method will be called when Electron has finished
@@ -28,7 +28,8 @@ function createWindow () {
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(() => {
   createWindow()
-  
+  createWindow()
+
   app.on('activate', function () {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
@@ -49,5 +50,8 @@ const {ipcMain} = require('electron')
 
 ipcMain.on('asynchronous-message', (event, arg) => {
   console.log("accept ping");
-  event.sender.send('asynchronous-reply', 'pong')
+  const msg = 'pong '+new Date().getTime();
+  console.log("response="+msg)
+  // イベント送信者に返事
+  event.sender.send('asynchronous-reply',msg );
 })

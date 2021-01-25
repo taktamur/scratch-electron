@@ -13,3 +13,8 @@ asyncMsgBtn.addEventListener('click', () => {
   console.log("click");
   window.myAPI.ping();
 })
+
+window.myAPI.pong((msg)=>{
+  const divPong = document.getElementById('pong');
+  divPong.innerText = msg;
+})
