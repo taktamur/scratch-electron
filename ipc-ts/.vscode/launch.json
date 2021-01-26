@@ -22,6 +22,7 @@
           "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd"
       },
       "console":"integratedTerminal",
+      "preLaunchTask": "npm: build" 
    }
   ]
 }
